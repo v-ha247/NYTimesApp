@@ -1,8 +1,7 @@
 
 ion-card{
     max-width: 440px;
-    float: center;
-    align-items: center;
+    break-inside: avoid-column;
 }
 
 .center {
@@ -15,4 +14,22 @@ ion-card{
 ion-list{
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+}
+
+.collection {
+    @media (max-width: 879px) and (min-width: 0px){
+        column-count: 1;
+    }
+    @media (max-width: 1139px) and (min-width: 880px){
+        column-count: 2;
+    }
+    @media (max-width: 1399px) and (min-width: 1140px){
+        column-count: 3;
+    }
+    @media (max-width: 1699px) and (min-width: 1400px){
+        column-count: 4;
+    }
+    @media (min-width: 1700px){
+        column-count: 5;
+    }
 }

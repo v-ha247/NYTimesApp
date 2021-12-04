@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MostPopular } from 'src/app/models/mostpopular.model';
+import { TopStories } from 'src/app/models/topstories.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,5 +16,10 @@ export class NYTimesAPIService {
   public getMostPopular(basedOn: String, days: String) {
     return this.http.get<MostPopular>(this.apibase + '/svc/mostpopular/v2/'
       + basedOn + '/' + days + '.json?api-key=' + this.key);
+  }
+
+  public getTopStories(section: String) {
+    return this.http.get<TopStories>(this.apibase + '/svc/topstories/v2/'
+      + section + '.json?api-key=' + this.key);
   }
 }
