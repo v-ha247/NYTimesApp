@@ -15,7 +15,7 @@
   </ion-header>
 
   <ion-list>
-    <ion-item>
+    <ion-item lines="none">
       <ion-label>Based on:</ion-label>
       <ion-select [(ngModel)]="selectedBasedOn" (ionChange)="onChange($event)" interface="popover">
         <ion-select-option *ngFor="let item of basedOn" [value]="item.value">
@@ -24,7 +24,7 @@
       </ion-select>
     </ion-item>
 
-    <ion-item>
+    <ion-item lines="none">
       <ion-label>Period:</ion-label>
       <ion-select [(ngModel)]="selectedPeriod" (ionChange)="onChange($event)" interface="popover">
         <ion-select-option *ngFor="let item of period" [value]="item.value">
@@ -36,26 +36,33 @@
 
   <div class="center">
     <div class="collection ion-padding">
-      <ion-card *ngFor="let result of results" href="{{result.url}}" style="break-inside: avoid-column">
-        <img *ngIf="result.media?.length > 0" src="{{result.media[0]['media-metadata'][2].url}}" />
+      <div *ngFor="let result of results">
+        <ion-card *ngIf="result.url && result.abstract" href="{{result.url}}">
+          <img *ngIf="result.media?.length > 0" src="{{result.media[0]['media-metadata'][2].url}}" />
 
-        <ion-card-header>
-          <ion-card-title>{{result.title}}</ion-card-title>
-          <ion-card-subtitle>
-            {{result.published_date}}
-          </ion-card-subtitle>
-        </ion-card-header>
+          <ion-card-header>
+            <ion-card-title>{{result.title}}</ion-card-title>
+            <ion-card-subtitle>{{result.published_date}}</ion-card-subtitle>
+            <ion-card-subtitle>{{result.byline}}</ion-card-subtitle>
+          </ion-card-header>
 
-        <ion-card-content>
-          <ion-chip [disabled]="true">
-            <ion-label color="secondary">{{result.section}}</ion-label>
-          </ion-chip>
-        </ion-card-content>
+          <ion-card-content>
+            <ion-chip [disabled]="true">
+              <ion-label color="secondary">{{result.section}}</ion-label>
+            </ion-chip>
+            <ion-chip *ngIf="result.subsection" [disabled]="true">
+              <ion-label color="danger">{{result.subsection}}</ion-label>
+            </ion-chip>
+            <ion-chip *ngFor="let facet of result.des_facet" [disabled]="true">
+              <ion-label color="dark">{{facet}}</ion-label>
+            </ion-chip>
+          </ion-card-content>
 
-        <ion-card-content>
-          {{result.abstract}}
-        </ion-card-content>
-      </ion-card>
+          <ion-card-content>
+            {{result.abstract}}
+          </ion-card-content>
+        </ion-card>
+      </div>
     </div>
   </div>
 
