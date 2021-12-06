@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MostPopular } from 'src/app/models/mostpopular.model';
+import { Search } from 'src/app/models/search.model';
 import { TopStories } from 'src/app/models/topstories.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -21,5 +23,11 @@ export class NYTimesAPIService {
   public getTopStories(section: String) {
     return this.http.get<TopStories>(this.apibase + '/svc/topstories/v2/'
       + section + '.json?api-key=' + this.key);
+  }
+
+  // https://api.nytimes.com/svc/search/v2/articlesearch.json?q=new+york+times&page=2&sort=oldest&api-key=your-api-key
+  public getSearch(query: String) {
+    return this.http.get<Search>(this.apibase + '/svc/search/v2/articlesearch.json?'
+      + query + '&api-key=' + this.key);
   }
 }

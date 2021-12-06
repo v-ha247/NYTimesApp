@@ -24,3 +24,15 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+.custom-modal-css .modal-wrapper {
+    min-height: 260px;
+    height: auto;
+    width: 80%;
+ }
+
+.ios .custom-modal-css .modal-wrapper {
+    min-height: 230px;
+    height: auto;
+    width: 80%;
+}

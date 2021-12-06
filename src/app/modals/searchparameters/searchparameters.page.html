@@ -10,7 +10,6 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div style="border-radius: 20px;">
     <ion-list>
       <ion-item lines="none">
         <ion-label>Sort:</ion-label>
@@ -31,5 +30,7 @@
         <ion-datetime displayFormat="YYYY/MM/DD" min="2012-01-01" [(ngModel)]="endDate"></ion-datetime>
       </ion-item>
     </ion-list>
-  </div>
+    <ion-button class="center ion-padding" (click)="closeModal()">
+      Confirm
+    </ion-button>
 </ion-content>

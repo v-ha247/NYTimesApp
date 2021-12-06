@@ -4,18 +4,36 @@
       Search
     </ion-title>
   </ion-toolbar>
-  <ion-toolbar >
-    <ion-searchbar [(ngModel)]="searchQuery" (search)="search($event)" ></ion-searchbar>
+  <ion-toolbar>
+    <ion-searchbar (search)="search($event)"></ion-searchbar>
     <ion-buttons slot="start">
       <ion-button (click)="openModal()">
         <ion-icon slot="icon-only" name="chevron-down-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+  <ion-progress-bar *ngIf="showLoader" type="indeterminate"></ion-progress-bar>
 </ion-header>
 
 
 
-<ion-content [fullscreen]="true">
-
+<ion-content [fullscreen]="true">  
+  <ion-list *ngIf="docs.length > 0">
+    <ion-list-header>
+      Results:
+    </ion-list-header>
+    <ion-item *ngFor="let item of docs">
+      <ion-avatar class="avatar-size" slot="start">
+        <img *ngIf="item.multimedia[0]" src="https://static01.nyt.com/{{item.multimedia[0].url}}" />
+        <img *ngIf="!item.multimedia[0]" style="width: 100px; height: 100px;" src="..\..\assets\icon\NYNews.png" />
+      </ion-avatar>
+      <ion-label>
+        <h2 class="ion-text-wrap">{{item.headline.main}}</h2>
+        <p class="ion-text-wrap">{{item.snippet}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-text class="center" *ngIf="docs.length == 0">
+    <h2>No Results</h2>
+  </ion-text>
 </ion-content>
