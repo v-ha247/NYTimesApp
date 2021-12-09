@@ -17,7 +17,20 @@
 
 
 
-<ion-content [fullscreen]="true">  
+<ion-content [fullscreen]="true">
+
+  <ion-buttons>
+    <ion-button slot="start" (click)="clearHistory()">
+      Clear History
+    </ion-button>
+    <ion-button slot="end" (click)="getHistory()">
+      Get History
+    </ion-button>
+  </ion-buttons>
+  <ion-text class="center" *ngIf="docs.length == 0">
+    <h2>No Results</h2>
+  </ion-text>
+
   <ion-list *ngIf="docs.length > 0">
     <ion-list-header>
       Results:
@@ -33,7 +46,17 @@
       </ion-label>
     </ion-item>
   </ion-list>
-  <ion-text class="center" *ngIf="docs.length == 0">
-    <h2>No Results</h2>
-  </ion-text>
+
+  <ion-list *ngIf="searchHistory?.length > 0">
+    <ion-list-header>
+      Search History:
+    </ion-list-header>
+    <ion-item *ngFor="let history of searchHistory">
+      <ion-icon name="time-outline"></ion-icon>
+      <ion-label>
+        <h2 class="ion-text-wrap" style="padding-left: 10px;">{{history}}</h2>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
 </ion-content>

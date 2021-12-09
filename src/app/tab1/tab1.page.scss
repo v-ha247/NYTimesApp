@@ -17,10 +17,10 @@ ion-list{
 }
 
 .collection {
-    @media (max-width: 879px) and (min-width: 0px){
+    @media (max-width: 579px) and (min-width: 0px){
         column-count: 1;
     }
-    @media (max-width: 1139px) and (min-width: 880px){
+    @media (max-width: 1139px) and (min-width: 580px){
         column-count: 2;
     }
     @media (max-width: 1399px) and (min-width: 1140px){

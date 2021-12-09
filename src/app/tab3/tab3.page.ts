@@ -6,6 +6,7 @@ import { SearchparametersPage } from '../modals/searchparameters/searchparameter
 
 import { Doc } from '../models/search.model'
 
+import { Storage } from '@capacitor/storage';
 
 @Component({
   selector: 'app-tab3',
@@ -29,16 +30,15 @@ export class Tab3Page {
     { value: "oldest", name: "Oldest" }
   ];
 
-  query: String;
   docs: Doc[] = [];
-
   showLoader: boolean;
+  searchHistory: any[] = [];
 
   constructor(
     private nytimesService: NYTimesAPIService,
-    private modalController: ModalController
+    private modalController: ModalController,
   ) {
-
+    this.getHistory();
   }
 
   async openModal() {
@@ -65,21 +65,59 @@ export class Tab3Page {
   }
 
   search($event) {
-    this.showLoader = true;
-    console.log($event.target.value);
+    if($event.target.value){
+      this.showLoader = true;
+      console.log($event.target.value);
+      this.saveHistory($event.target.value);
+  
+      // q=keyword&begin_date=20120101&end_date=20121231&sort=oldest
+      const query =
+        "q=" + $event.target.value.replace(/\s/g, '+')
+        + "&" + "begin_date=" + this.beginDate.substr(0, 4) + this.beginDate.substr(5, 2) + this.beginDate.substr(8, 2)
+        + "&" + "end_date=" + this.endDate.substr(0, 4) + this.endDate.substr(5, 2) + this.endDate.substr(8, 2)
+        + "&" + "sort=" + this.sort;
+      console.log(query);
+  
+      this.nytimesService.getSearch(query).subscribe(data => {
+        console.log(data);
+        this.docs = data.response.docs;
+        this.showLoader = false;
+      });
+    }
+  }
 
-    // q=keyword&begin_date=20120101&end_date=20121231&sort=oldest
-    this.query =
-      "q=" + $event.target.value.replace(/\s/g, '+')
-      + "&" + "begin_date=" + this.beginDate.substr(0, 4) + this.beginDate.substr(5, 2) + this.beginDate.substr(8, 2)
-      + "&" + "end_date=" + this.endDate.substr(0, 4) + this.endDate.substr(5, 2) + this.endDate.substr(8, 2)
-      + "&" + "sort=" + this.sort
-    console.log(this.query);
+  async saveHistory(search: string) {
+    let index = -1;
+    for (const h in this.searchHistory) {
+      if(this.searchHistory[h].toUpperCase() == search.toUpperCase()) {
+        index = this.searchHistory.indexOf(this.searchHistory[h]);
+      }
+    }
+    if (index > -1){
+      this.searchHistory.splice(index, 1);
+    }
+    this.searchHistory.unshift(search);
+    if (this.searchHistory.length > 5) {
+      this.searchHistory.pop();
+    }
 
-    this.nytimesService.getSearch(this.query).subscribe(data => {
-      console.log(data);
-      this.docs = data.response.docs;
-      this.showLoader = false;
-    });
+    console.log(this.searchHistory);
+    await Storage.set({
+      key: "history",
+      value: JSON.stringify(this.searchHistory)
+    })
+  }
+
+  async clearHistory(){
+    await Storage.clear()
+    //this.searchHistory = [];
+  }
+
+  async getHistory(){
+    const { value } = await Storage.get({ key: "history"})
+    if(value){
+      this.searchHistory = JSON.parse(value);
+      console.log(this.searchHistory)
+    }
   }
 }

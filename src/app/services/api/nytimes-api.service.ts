@@ -25,7 +25,6 @@ export class NYTimesAPIService {
       + section + '.json?api-key=' + this.key);
   }
 
-  // https://api.nytimes.com/svc/search/v2/articlesearch.json?q=new+york+times&page=2&sort=oldest&api-key=your-api-key
   public getSearch(query: String) {
     return this.http.get<Search>(this.apibase + '/svc/search/v2/articlesearch.json?'
       + query + '&api-key=' + this.key);
