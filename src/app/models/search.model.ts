@@ -24,7 +24,7 @@ export interface Doc {
     multimedia:         Multimedia[];
     headline:           Headline;
     keywords:           Keyword[];
-    pub_date:           Date;
+    pub_date:           string;
     document_type:      string;
     news_desk:          string;
     section_name:       string;

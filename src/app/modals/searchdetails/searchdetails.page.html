@@ -1,0 +1,44 @@
+<ion-content>
+  <div class="center ion-padding">
+    <ion-card>
+      <img *ngIf="doc.multimedia[0]" src="https://static01.nyt.com/{{doc.multimedia[0].url}}" />
+
+      <ion-card-header>
+        <ion-card-title>{{doc.headline.main}}</ion-card-title>
+        <ion-card-subtitle>{{doc.byline.original}}</ion-card-subtitle>
+        <ion-card-subtitle>
+          <ion-datetime class="ion-no-padding" displayFormat="YY/MM/DD" value="{{doc.pub_date}}"></ion-datetime>
+        </ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-chip [disabled]="true">
+          <ion-label color="secondary">{{doc.section_name}}</ion-label>
+        </ion-chip>
+        <ion-chip *ngIf="doc.subsection_name" [disabled]="true">
+          <ion-label color="danger">{{doc.subsection_name}}</ion-label>
+        </ion-chip>
+      </ion-card-content>
+
+      <ion-card-content>
+        {{doc.lead_paragraph}}
+      </ion-card-content>
+
+      <ion-card-content>
+        {{doc.abstract}}
+      </ion-card-content>
+
+      <ion-card-content class="ion-padding">
+        <ion-button class="center ion-padding" href="{{doc.web_url}}">
+          Read Article
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <ion-toolbar class="ion-text-center">
+    <ion-button (click)="closeModal()" fill="clear">
+      <ion-icon slot="icon-only" name="close-circle"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-content>

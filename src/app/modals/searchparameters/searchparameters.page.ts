@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -8,9 +9,9 @@ import { ModalController } from '@ionic/angular';
 })
 export class SearchparametersPage implements OnInit {
 
-  sort: String;
-  endDate: String;
-  beginDate: String;
+  sort: string;
+  endDate: string;
+  beginDate: string;
   sortList: any[];
 
   constructor(

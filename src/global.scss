@@ -31,8 +31,14 @@
     width: 80%;
  }
 
-.ios .custom-modal-css .modal-wrapper {
-    min-height: 230px;
-    height: auto;
-    width: 80%;
+.transparent-modal-css{
+    --background: #0000000c;
+    .modal-wrapper {
+        width: 100%;
+        height: 100%;
+    }
+
+    ion-content {
+        --background: transparent;
+    }
 }

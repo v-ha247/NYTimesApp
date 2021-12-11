@@ -1,11 +1,10 @@
 .center {
     display: flex;
     justify-content: center;
-    align-content: center;
-    align-items: center;
 }
 
 .avatar-size  {     
-    width: 100px !important;  
-    height: 100px !important;
+    width: 100px;  
+    height: 100px;
+    --border-radius: 15px;
 }

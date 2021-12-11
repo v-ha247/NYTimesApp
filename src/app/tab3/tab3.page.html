@@ -1,13 +1,8 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Search
-    </ion-title>
-  </ion-toolbar>
-  <ion-toolbar>
-    <ion-searchbar (search)="search($event)"></ion-searchbar>
+    <ion-searchbar (search)="search($event)" [(ngModel)]="searchBar"></ion-searchbar>
     <ion-buttons slot="start">
-      <ion-button (click)="openModal()">
+      <ion-button (click)="openModalParam()">
         <ion-icon slot="icon-only" name="chevron-down-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -19,14 +14,6 @@
 
 <ion-content [fullscreen]="true">
 
-  <ion-buttons>
-    <ion-button slot="start" (click)="clearHistory()">
-      Clear History
-    </ion-button>
-    <ion-button slot="end" (click)="getHistory()">
-      Get History
-    </ion-button>
-  </ion-buttons>
   <ion-text class="center" *ngIf="docs.length == 0">
     <h2>No Results</h2>
   </ion-text>
@@ -35,28 +22,40 @@
     <ion-list-header>
       Results:
     </ion-list-header>
-    <ion-item *ngFor="let item of docs">
+    <ion-item *ngFor="let item of docs" button (click)="openModalDetail(item)">
       <ion-avatar class="avatar-size" slot="start">
         <img *ngIf="item.multimedia[0]" src="https://static01.nyt.com/{{item.multimedia[0].url}}" />
         <img *ngIf="!item.multimedia[0]" style="width: 100px; height: 100px;" src="..\..\assets\icon\NYNews.png" />
       </ion-avatar>
       <ion-label>
         <h2 class="ion-text-wrap">{{item.headline.main}}</h2>
-        <p class="ion-text-wrap">{{item.snippet}}</p>
+        <p class="ion-text-wrap">{{item.abstract}}</p>
       </ion-label>
     </ion-item>
   </ion-list>
 
-  <ion-list *ngIf="searchHistory?.length > 0">
+  <ion-list *ngIf="searchHistory.length > 0">
     <ion-list-header>
       Search History:
     </ion-list-header>
-    <ion-item *ngFor="let history of searchHistory">
+    <ion-item *ngFor="let history of searchHistory" button (click)="searchFromHistory(history)">
       <ion-icon name="time-outline"></ion-icon>
       <ion-label>
         <h2 class="ion-text-wrap" style="padding-left: 10px;">{{history}}</h2>
       </ion-label>
+      <ion-buttons>
+        <ion-button (click)="deleteHistory(history)">
+          <ion-icon slot="icon-only" name="close"></ion-icon>
+        </ion-button>
+      </ion-buttons>
     </ion-item>
+    <ion-buttons>
+      <ion-button  slot="start" (click)="clearHistory()">
+        Clear History
+      </ion-button>
+    </ion-buttons>
   </ion-list>
+
+
 
 </ion-content>

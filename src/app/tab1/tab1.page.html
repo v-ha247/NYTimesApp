@@ -4,6 +4,7 @@
       Most Popular
     </ion-title>
   </ion-toolbar>
+  <ion-progress-bar *ngIf="showLoader" type="indeterminate"></ion-progress-bar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
@@ -42,8 +43,10 @@
 
           <ion-card-header>
             <ion-card-title>{{result.title}}</ion-card-title>
-            <ion-card-subtitle>{{result.published_date}}</ion-card-subtitle>
             <ion-card-subtitle>{{result.byline}}</ion-card-subtitle>
+            <ion-card-subtitle>
+              <ion-datetime class="ion-no-padding" displayFormat="YY/MM/DD" value="{{result.published_date}}"></ion-datetime>
+            </ion-card-subtitle> 
           </ion-card-header>
 
           <ion-card-content>
@@ -52,9 +55,6 @@
             </ion-chip>
             <ion-chip *ngIf="result.subsection" [disabled]="true">
               <ion-label color="danger">{{result.subsection}}</ion-label>
-            </ion-chip>
-            <ion-chip *ngFor="let facet of result.des_facet" [disabled]="true">
-              <ion-label color="dark">{{facet}}</ion-label>
             </ion-chip>
           </ion-card-content>
 
@@ -65,5 +65,11 @@
       </div>
     </div>
   </div>
+
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button color="light" (click)="scrollToTop()">
+      <ion-icon name="arrow-up-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
 </ion-content>
