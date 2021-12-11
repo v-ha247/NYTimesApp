@@ -16,8 +16,6 @@ import { Storage } from '@capacitor/storage';
 })
 export class Tab3Page {
 
-  //searchQuery: String = "";
-
   date: Date = new Date();
   endDate: string = new Date().toISOString();
   beginDate: string = new Date(
@@ -95,7 +93,9 @@ export class Tab3Page {
 
   callAPI(keyWord: string) {
     this.showLoader = true;
-    // q=keyword&begin_date=20120101&end_date=20121231&sort=oldest 
+    // q=keyword&begin_date=20120101&end_date=20121231&sort=oldest
+    console.log(encodeURI(keyWord))
+    
     const query =
       "q=" + keyWord.replace(/\s/g, '+')
       + "&" + "begin_date=" + this.beginDate.substr(0, 4) + this.beginDate.substr(5, 2) + this.beginDate.substr(8, 2)
@@ -103,9 +103,9 @@ export class Tab3Page {
       + "&" + "sort=" + this.sort;
     console.log(query);
 
-    this.nytimesService.getSearch(query).subscribe(data => {
+    this.nytimesService.getSearch$(query).subscribe(data => {
       console.log(data);
-      this.docs = data.response.docs;
+      this.docs = data;
       this.showLoader = false;
     });
   }

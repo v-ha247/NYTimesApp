@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "NYTimesApp",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

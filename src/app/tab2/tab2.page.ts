@@ -1,9 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { NYTimesAPIService } from '../services/api/nytimes-api.service';
 
-import { TopStories } from 'src/app/models/topstories.model';
 import { Result } from 'src/app/models/topstories.model';
 import { IonContent } from '@ionic/angular';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-tab2',
@@ -13,8 +13,7 @@ import { IonContent } from '@ionic/angular';
 export class Tab2Page {
   @ViewChild(IonContent) content: IonContent;
   
-  //topstories: TopStories;
-  results: Result[] = [];
+  results$: Observable<Result>;
 
   sections: any[] = [
     {value: "arts", name: "Arts"},
@@ -45,27 +44,19 @@ export class Tab2Page {
   ];
   selectedSection: any = "home";
 
-  showLoader: boolean;
-
   constructor(
     private nytimesService: NYTimesAPIService,
   ) {
-    this.callAPI();
+    this.callAPI$();
   }
 
   onChange($event){
     console.log($event.target.value);
-    this.callAPI();
+    this.callAPI$();
   }
 
-  callAPI(){
-    this.showLoader = true;
-    this.nytimesService.getTopStories(this.selectedSection).subscribe(data=>{
-      console.log(data);
-      //this.topstories = data;
-      this.results = data.results;
-      this.showLoader = false;
-    });
+  callAPI$(){
+    this.results$ = this.nytimesService.getTopStories$(this.selectedSection);
   }
 
   scrollToTop() {

@@ -1,9 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { NYTimesAPIService } from '../services/api/nytimes-api.service';
 
-import { MostPopular } from 'src/app/models/mostpopular.model';
 import { Result } from 'src/app/models/mostpopular.model';
 import { IonContent } from '@ionic/angular';
+
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-tab1',
@@ -12,9 +13,8 @@ import { IonContent } from '@ionic/angular';
 })
 export class Tab1Page {
   @ViewChild(IonContent) content: IonContent;
-  
-  //mostpopular: MostPopular;
-  results: Result[] = [];
+
+  results$: Observable<Result>;
 
   basedOn: any[] = [
     {value: "viewed", name: "Views"},
@@ -29,27 +29,19 @@ export class Tab1Page {
   selectedBasedOn: any = "viewed";
   selectedPeriod: any = "1";
 
-  showLoader: boolean;
-
   constructor(
     private nytimesService: NYTimesAPIService,
   ) {
-    this.callAPI();
+    this.callAPI$();
   }
 
   onChange($event){
     console.log($event.target.value);
-    this.callAPI();
+    this.callAPI$();
   }
 
-  callAPI(){
-    this.showLoader = true;
-    this.nytimesService.getMostPopular(this.selectedBasedOn,this.selectedPeriod).subscribe(data=>{
-      console.log(data);
-      //this.mostpopular = data;
-      this.results = data.results;
-      this.showLoader = false;
-    });
+  callAPI$(){
+    this.results$ = this.nytimesService.getMostPopular$(this.selectedBasedOn,this.selectedPeriod);
   }
 
   scrollToTop() {

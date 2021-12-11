@@ -4,7 +4,6 @@
       Top Stories
     </ion-title>
   </ion-toolbar>
-  <ion-progress-bar *ngIf="showLoader" type="indeterminate"></ion-progress-bar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
@@ -27,7 +26,7 @@
 
   <div class="center">
     <div class="collection ion-padding">
-      <div *ngFor="let result of results">
+      <div *ngFor="let result of results$ | async">
         <ion-card *ngIf="result.url && result.abstract" href="{{result.url}}">
           <img *ngIf="result.multimedia?.length > 0" src="{{result.multimedia[0].url}}" />
 
