@@ -8,6 +8,10 @@ import { SearchdetailsPage } from '../modals/searchdetails/searchdetails.page';
 import { Doc } from '../models/search.model'
 
 import { Storage } from '@capacitor/storage';
+import { Keyboard } from '@capacitor/keyboard';
+
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tab3',
@@ -29,7 +33,7 @@ export class Tab3Page {
     { value: "oldest", name: "Oldest" }
   ];
 
-  docs: Doc[] = [];
+  docs$: Observable<Doc>;
   showLoader: boolean;
   searchBar: string
   searchHistory: any[] = [];
@@ -81,6 +85,7 @@ export class Tab3Page {
       console.log($event.target.value);
       this.saveHistory($event.target.value);
       this.callAPI($event.target.value);
+      Keyboard.hide();
     }
   }
 
@@ -95,7 +100,7 @@ export class Tab3Page {
     this.showLoader = true;
     // q=keyword&begin_date=20120101&end_date=20121231&sort=oldest
     console.log(encodeURI(keyWord))
-    
+
     const query =
       "q=" + keyWord.replace(/\s/g, '+')
       + "&" + "begin_date=" + this.beginDate.substr(0, 4) + this.beginDate.substr(5, 2) + this.beginDate.substr(8, 2)
@@ -103,11 +108,8 @@ export class Tab3Page {
       + "&" + "sort=" + this.sort;
     console.log(query);
 
-    this.nytimesService.getSearch$(query).subscribe(data => {
-      console.log(data);
-      this.docs = data;
-      this.showLoader = false;
-    });
+    this.docs$ = this.nytimesService.getSearch$(query)
+      .pipe(tap(() => this.showLoader = false));
   }
 
   async saveHistory(search: string) {

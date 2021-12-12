@@ -12,10 +12,10 @@
       </ion-card-header>
 
       <ion-card-content>
-        <ion-chip [disabled]="true">
+        <ion-chip>
           <ion-label color="secondary">{{doc.section_name}}</ion-label>
         </ion-chip>
-        <ion-chip *ngIf="doc.subsection_name" [disabled]="true">
+        <ion-chip *ngIf="doc.subsection_name">
           <ion-label color="danger">{{doc.subsection_name}}</ion-label>
         </ion-chip>
       </ion-card-content>
@@ -36,9 +36,10 @@
     </ion-card>
   </div>
 
-  <ion-toolbar class="ion-text-center">
+  <div class="center" style="padding-bottom: 60px;">
     <ion-button (click)="closeModal()" fill="clear">
       <ion-icon slot="icon-only" name="close-circle"></ion-icon>
     </ion-button>
-  </ion-toolbar>
+  </div>
+
 </ion-content>

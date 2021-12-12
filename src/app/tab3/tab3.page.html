@@ -12,17 +12,12 @@
 
 
 
-<ion-content [fullscreen]="true">
-
-  <ion-text class="center" *ngIf="docs.length == 0">
-    <h2>No Results</h2>
-  </ion-text>
-
-  <ion-list *ngIf="docs.length > 0">
+<ion-content>
+  <ion-list>
     <ion-list-header>
       Results:
     </ion-list-header>
-    <ion-item *ngFor="let item of docs" button (click)="openModalDetail(item)">
+    <ion-item *ngFor="let item of docs$ | async" button (click)="openModalDetail(item)">
       <ion-avatar class="avatar-size" slot="start">
         <img *ngIf="item.multimedia[0]" src="https://static01.nyt.com/{{item.multimedia[0].url}}" />
         <img *ngIf="!item.multimedia[0]" style="width: 100px; height: 100px;" src="..\..\assets\icon\NYNews.png" />
@@ -50,7 +45,7 @@
       </ion-buttons>
     </ion-item>
     <ion-buttons>
-      <ion-button  slot="start" (click)="clearHistory()">
+      <ion-button slot="start" (click)="clearHistory()">
         Clear History
       </ion-button>
     </ion-buttons>

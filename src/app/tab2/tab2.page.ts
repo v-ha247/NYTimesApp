@@ -2,8 +2,11 @@ import { Component, ViewChild } from '@angular/core';
 import { NYTimesAPIService } from '../services/api/nytimes-api.service';
 
 import { Result } from 'src/app/models/topstories.model';
+
 import { IonContent } from '@ionic/angular';
+
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tab2',
@@ -12,37 +15,39 @@ import { Observable } from 'rxjs';
 })
 export class Tab2Page {
   @ViewChild(IonContent) content: IonContent;
-  
+
   results$: Observable<Result>;
 
   sections: any[] = [
-    {value: "arts", name: "Arts"},
-    {value: "automobiles", name: "Automobiles"},
-    {value: "books", name: "Books"},
-    {value: "business", name: "Business"},
-    {value: "fashion", name: "Fashion"},
-    {value: "food", name: "Food"},
-    {value: "health", name: "Health"},
-    {value: "home", name: "Home"},
-    {value: "movies", name: "Movies"},
-    {value: "magazine", name: "Magazine"},
-    {value: "nyregion", name: "NY Region"},
-    {value: "obituaries", name: "Obituaries"},
-    {value: "opinion", name: "Opinion"},
-    {value: "politics", name: "Politics"},
-    {value: "realestate", name: "Realestate"},   
-    {value: "science", name: "Science"},   
-    {value: "sports", name: "Sports"},   
-    {value: "sundayreview", name: "Sunday Review"},   
-    {value: "technology", name: "Technology"},   
-    {value: "theater", name: "Theater"},   
-    {value: "t-magazine", name: "t-magazine"},   
-    {value: "travel", name: "Travel"},   
-    {value: "upshot", name: "Upshot"},   
-    {value: "us", name: "U.S."},
-    {value: "world", name: "World"}      
+    { value: "arts", name: "Arts" },
+    { value: "automobiles", name: "Automobiles" },
+    { value: "books", name: "Books" },
+    { value: "business", name: "Business" },
+    { value: "fashion", name: "Fashion" },
+    { value: "food", name: "Food" },
+    { value: "health", name: "Health" },
+    { value: "home", name: "Home" },
+    { value: "movies", name: "Movies" },
+    { value: "magazine", name: "Magazine" },
+    { value: "nyregion", name: "NY Region" },
+    { value: "obituaries", name: "Obituaries" },
+    { value: "opinion", name: "Opinion" },
+    { value: "politics", name: "Politics" },
+    { value: "realestate", name: "Realestate" },
+    { value: "science", name: "Science" },
+    { value: "sports", name: "Sports" },
+    { value: "sundayreview", name: "Sunday Review" },
+    { value: "technology", name: "Technology" },
+    { value: "theater", name: "Theater" },
+    { value: "t-magazine", name: "t-magazine" },
+    { value: "travel", name: "Travel" },
+    { value: "upshot", name: "Upshot" },
+    { value: "us", name: "U.S." },
+    { value: "world", name: "World" }
   ];
   selectedSection: any = "home";
+
+  showLoader: boolean;
 
   constructor(
     private nytimesService: NYTimesAPIService,
@@ -50,13 +55,15 @@ export class Tab2Page {
     this.callAPI$();
   }
 
-  onChange($event){
+  onChange($event) {
     console.log($event.target.value);
     this.callAPI$();
   }
 
-  callAPI$(){
-    this.results$ = this.nytimesService.getTopStories$(this.selectedSection);
+  callAPI$() {
+    this.showLoader = true;
+    this.results$ = this.nytimesService.getTopStories$(this.selectedSection)
+      .pipe(tap(() => this.showLoader = false));
   }
 
   scrollToTop() {

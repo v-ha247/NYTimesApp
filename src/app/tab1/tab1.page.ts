@@ -2,9 +2,11 @@ import { Component, ViewChild } from '@angular/core';
 import { NYTimesAPIService } from '../services/api/nytimes-api.service';
 
 import { Result } from 'src/app/models/mostpopular.model';
+
 import { IonContent } from '@ionic/angular';
 
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators'
 
 @Component({
   selector: 'app-tab1',
@@ -17,17 +19,19 @@ export class Tab1Page {
   results$: Observable<Result>;
 
   basedOn: any[] = [
-    {value: "viewed", name: "Views"},
-    {value: "shared", name: "Shared"},
-    {value: "emailed", name: "Emailed"}
+    { value: "viewed", name: "Views" },
+    { value: "shared", name: "Shared" },
+    { value: "emailed", name: "Emailed" }
   ];
   period: any[] = [
-    {value: "1", name: "Today"},
-    {value: "7", name: "Last 7 days"},
-    {value: "30", name: "Last 30 days"}
+    { value: "1", name: "Today" },
+    { value: "7", name: "Last 7 days" },
+    { value: "30", name: "Last 30 days" }
   ];
   selectedBasedOn: any = "viewed";
   selectedPeriod: any = "1";
+
+  showLoader: boolean;
 
   constructor(
     private nytimesService: NYTimesAPIService,
@@ -35,13 +39,15 @@ export class Tab1Page {
     this.callAPI$();
   }
 
-  onChange($event){
+  onChange($event) {
     console.log($event.target.value);
     this.callAPI$();
   }
 
-  callAPI$(){
-    this.results$ = this.nytimesService.getMostPopular$(this.selectedBasedOn,this.selectedPeriod);
+  callAPI$() {
+    this.showLoader = true;
+    this.results$ = this.nytimesService.getMostPopular$(this.selectedBasedOn, this.selectedPeriod)
+      .pipe(tap(() => this.showLoader = false));
   }
 
   scrollToTop() {
